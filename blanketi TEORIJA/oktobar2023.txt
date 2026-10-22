@@ -1,0 +1,38 @@
+1.
+
+ObrisiIUpisi(LL,A,N)
+
+if(start=null)then 
+	exit
+end if
+i<-0
+while(start!=null)
+
+	MAKS<- start
+	MAKSP<-null
+	LOC<-link(start)
+	LOCP<-start
+	while(LOC!=null)
+		if(info(LOC)>info(MAKS))then
+			MAKS<-LOC
+			MAKSP<-LOCP
+		end if
+		LOCP<-LOC
+		LOC<-link(LOC)
+	end while
+
+if(MAKS!=null && i<N)
+	A[i]<-info(MAKS)
+	if(MAKS=start) then
+		start<-link(MAKS)
+		
+	else
+		link(MAKSP)<-link(MAKS)
+	end if
+	freeNode(MAKS)
+	i++
+end if
+end while
+	
+	
+

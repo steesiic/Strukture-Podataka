@@ -1,0 +1,177 @@
+PRVI:
+
+void partitionList(Node** head, int pivot)
+{
+    if(head==nullptr || *head==nullptr) 
+        return;
+    
+        Node* curr = *head;
+        Node* prevCurr = nullptr;
+        
+        while(curr != nullptr)
+        {
+            Node* tmpCurr = curr;
+            Node* tmpPrevCurr = prevCurr;
+            
+            Node* veci = curr;
+            Node* prevVeci = prevCurr;
+            while(veci != nullptr && veci->info >=pivot)
+            {
+                prevVeci = veci;
+                veci=veci->next;
+            }
+            if(veci !=nullptr && veci->info<pivot)
+            {
+                prevVeci->next = veci->next;
+                if(tmpPrevCurr==nullptr)
+                {
+                    veci->next = *head;
+                    *head = veci;
+                }
+                
+                else
+                {
+                    tmpPrevCurr->next = veci;
+                    veci->next = curr;
+                }
+            }
+            prevCurr = curr;
+            curr=  curr->next;
+        }
+}
+
+DRUGI:
+
+
+unsigned int h(ScatterObject o)
+{
+    unsigned int a= 2654435769;
+    unsigned int g=0;
+    
+    int i=0;
+    while(o.key[i]!='\0')
+    {
+        g= g*101+o.key[i];
+        i++;
+    }
+    return(g*a)>>(32-10);
+}
+unsigned int c(int i )
+{
+    return i*i;
+}
+
+bool isIn(char* key)
+{
+    ScatterObject o;
+    strcpy(o.key,key); 
+    unsigned int hash = h(o);
+    unsigned int probe=hash;
+    
+    //int i=1;
+    
+    while(array[probe].next != -1 && array[probe] != o && array[probe].status!=0)
+    {
+         if(array[probe].status==1 && strcmp(array[probe].key,key)==0)
+            return true;
+        //probe=(hash+c(i))%m;
+        //i++;
+    }
+    return false;
+}
+
+void delete(char* key)
+{
+    ScatterObject o;
+    strcpy(o.key,o);
+    
+    unsigned int hash=h(o);
+    unsigned int probe=hash;
+    
+    while(array[probe].status!=0)
+    {
+        if(array[probe].status==2 && strcmp(array[probe].key,key)==0)
+        {
+            array[probe].status=-1;//obrisan je
+            return;
+        }
+    }
+}
+
+
+treci:
+int numberDeletedLeaves(BSTNodeInt root, int level)
+{
+    
+    return deleteLeavesDeeperThan(root, 0, level);
+    
+}
+int deleteLeavesDeeperThan(BSTNodeInt node, int currLevel, int level)
+{
+      if(node!=nullptr)
+        return 0;
+      int count=0;
+    
+      count+= deleteLeavesDeeperThan(root->left, currlevel+1,level);
+      count+=deleteLeavesDeeperThan(root->right,currlevel+1,level);
+      
+      if(node->left==nullptr && node->right==nullptr && currLevel>level)
+      {
+          delete node;
+          node=nullptr;
+          count++;
+      }
+        
+    return count;   
+}
+
+cetvrti: //nzm jel dobro i ne kontam ga
+minConnectingFlights(Node* start, Node* goal1, Node* goal2, int& diff)
+{
+    Queue *q = new Queue(NodeNum);
+    q->enqueue(start);
+    start->status = 1;
+    start->prev = nullptr; //prev kao prethodnik(predecessor)
+    
+    while(!q.isEmpty())
+    {
+            Node* curr = q->dequeue();
+            Node* neighbor = curr->adj;
+            while(neighbor != nullptr)
+            {
+                if(neighbor->status == 0)
+                {
+                    neighbor->status=1;
+                    neighbor->prev = curr;
+                    q->enqueue(neighbor);
+                }
+                neighbor=neighbor-> nextAdj;
+            }
+    }
+    // Brojanje presedanja do goal1
+    int steps1 = 0;
+    Node* tmp = goal1;
+    while(tmp->prev != nullptr)
+    {
+        tmp = tmp->prev;
+        steps1++;
+    }
+
+    // Brojanje presedanja do goal2
+    int steps2 = 0;
+    tmp = goal2;
+    while(tmp->prev != nullptr)
+    {
+        tmp = tmp->prev;
+        steps2++;
+    }
+
+    // Razlika u broju presedanja
+    diff = (steps1 > steps2) ? (steps1 - steps2) : (steps2 - steps1);
+
+    // Vraća čvor do kojeg je manje presedanja
+    return (steps1 <= steps2) ? goal1 : goal2;
+    
+    
+    
+}

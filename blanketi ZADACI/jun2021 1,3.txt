@@ -1,0 +1,78 @@
+prvi:
+
+LList* extractEven()
+{
+	LList* novaLista = new LList();
+	novaLista->head=nullptr;
+
+	if(head==nullptr)
+	return novaLista;
+
+	LListNode* curr = head;
+	LListNode* prevCurr = nullptr;	
+	
+	LListNode* novaCurr = nullptr;
+	
+	
+	while(curr!=nullptr)
+	{
+		if(curr->info%2==0)
+		{
+			if(prevCurr==nullptr)
+				head=curr->next;
+			prevCurr->next= curr->next;
+
+			if(novaLista->head==nullptr)
+				novaLista->head=curr;
+			else
+				novaCurr->next = curr;
+			
+			novaCurr=curr;			
+			prevCurr->next = curr->next;
+			curr->next= nullptr;
+			curr= prevCurr->next;
+			
+		}
+		else
+		{
+			prevCurr=curr;
+			curr=curr->next;
+		}
+	 	
+	
+	}
+	return novaLista;
+
+}
+
+
+
+
+treci:
+
+int countSl(Node* root)
+{
+	int count=0;
+	
+	if(root==nullptr) return 0;
+
+	
+	int zbirLevog = sum(root->left);
+	int zbirDesnog = sum(root->right);
+	
+	if(zbirLevog>zbirDesnog)
+	{
+		count++;
+	}
+	count+=countSl(root->left);
+	count+=countSl(root->right);
+	
+	return count;
+}
+
+int sum(Node* node)
+{
+	if(node==nullptr)return 0;
+	
+	return node->info+sum(node->left)+sum(node->right);
+}

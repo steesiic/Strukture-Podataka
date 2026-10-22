@@ -1,0 +1,23 @@
+treci:
+
+int findMaxPathLeaf(BSTNode* root, BSTNode** leaf)
+{
+	if(root==nullptr || (root->left==nullptr && root->right==nullptr))
+	return 0;
+	
+	BSTNode* leftLeaf = nullptr;
+	BSTNode* rightLeaf = nullptr;
+
+	int leftSum = findMaxPathLeaf(root->left, &leftLeaf);
+	int rightSum = findMaxPathLeaf(root->right, &rightLeaf);
+	if (leftSum > rightSum)
+   	 {
+       		 *leaf = leftLeaf;        // maksimalni list je onaj iz levog podstabla
+        	return leftSum + root->key;
+    	}
+    	else
+   	 {
+      	  *leaf = rightLeaf;       // maksimalni list je iz desnog podstabla
+      	  return rightSum + root->key;
+    	}
+}

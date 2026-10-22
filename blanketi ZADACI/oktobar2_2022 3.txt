@@ -1,0 +1,39 @@
+3. jeca +chatgpt
+
+
+Node* findSibling(Node* p)
+{
+    if (root == nullptr || p == nullptr)
+        return nullptr;
+
+    Queue<Node*> q(numberOfElements);
+    q.enqueue(root);
+
+    while (!q.isEmpty())
+    {
+        int size = q.size();
+        bool found = false;
+
+        for (int i = 0; i < size; i++)
+        {
+            Node* pok = q.dequeue();
+
+            if (found)
+                return pok;  // sledeći čvor na istom nivou
+
+            if (pok == p)
+                found = true;
+
+            if (pok->left != nullptr)
+                q.enqueue(pok->left);
+            if (pok->right != nullptr)
+                q.enqueue(pok->right);
+        }
+
+        // ako je p pronađen u ovom nivou, ali nije bilo više čvorova – nema braće
+        if (found)
+            return nullptr;
+    }
+
+    return nullptr; // ako p nije pronađen uopšte
+}	

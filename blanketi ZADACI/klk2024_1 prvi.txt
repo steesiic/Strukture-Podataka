@@ -1,0 +1,72 @@
+void LList::concatenateParts(LList* list2, int k)
+{
+	LListNode* insert = head;
+	bool nadjen = false;
+
+	while (insert != nullptr && !nadjen)
+	{
+		LListNode* tmp1Prev = nullptr;
+		LListNode* tmp1 = insert;
+		LListNode* tmp2 = list2->getHead();
+
+		int i = 0;
+
+		while(tmp1!=nullptr && tmp2!=nullptr && tmp1->info==tmp2->info)
+		{
+			tmp1Prev = tmp1;
+			tmp1 = tmp1->next;
+			tmp2 = tmp2->next;
+			i++;
+		}
+		if(i>=k)
+		{
+			nadjen = true;
+			insert = tmp1Prev;
+		}
+		else { insert = insert->next; }
+
+		if (!nadjen) return;
+
+		LListNode* trenutni = insert;
+		LListNode* pocetakPrev;
+		LListNode* pocetak;
+		LListNode* kraj;
+		LListNode* krajPrev;
+		while (trenutni != nullptr) {
+
+			pocetakPrev = trenutni;
+			pocetak = trenutni->next; // pocetak podliste
+
+			krajPrev = trenutni;
+			kraj = trenutni->next; // kraj podliste
+
+			int i = 0;
+			LListNode* tmp = list2->getHead();
+			while (kraj != nullptr && tmp != nullptr && kraj->info == tmp->info) {
+				krajPrev = kraj;
+				kraj = kraj->next;
+				tmp = tmp->next;
+				++i;
+			}
+
+			if (i >= k) { // nadjeno pojavljivanje prelancaj ga na insert
+
+				// ovo resava problem kad su dve liste jedna do druge
+				// jer onda nema potrebe za prelancavanjem 
+				if (insert != pocetakPrev) {
+
+					LListNode* desnoOdInsert = insert->next;
+					insert->next = pocetak;
+					krajPrev->next = desnoOdInsert;
+					pocetakPrev->next = kraj;
+
+				}
+
+				insert = krajPrev; // azuriraj insert
+				trenutni = krajPrev;
+			}
+			else
+				trenutni = trenutni->next;
+		}
+	}
+}

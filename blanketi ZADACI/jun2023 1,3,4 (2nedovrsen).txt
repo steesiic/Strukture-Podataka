@@ -1,0 +1,251 @@
+PRVI:
+bool LList::deleteSublist(LList* sublist)
+{
+	LListNode* tmp = head;
+	int count=0;
+	LListNode* tmpSub=sublist->head;
+	LListNode* tmpPrev = nullptr;
+	while (tmpSub != nullptr)
+	{
+		++count;
+		tmpSub = tmpSub->next;
+	}
+
+
+	while (tmp != nullptr)
+	{
+		LListNode* tmpSublist = sublist->head;
+		LListNode* tmpMainlist = tmp;
+
+		bool ok = true;
+		while(tmpMainlist!=nullptr && tmpSublist !=nullptr && ok)
+		{
+			if(tmpMainlist->info!=tmpSublist->info)
+			{
+				ok = false;
+			}
+			tmpMainlist = tmpMainlist->next;
+			tmpSublist = tmpSublist->next;
+		}
+
+		if(ok && tmpSublist==nullptr)
+		{
+			deleteFrom(tmpPrev, count);
+			if (tmpPrev == nullptr)
+				tmp = head;
+			else
+				tmp = tmpPrev->next;
+		}
+		else
+		{
+			tmpPrev = tmp;
+			tmp = tmp->next;
+		}
+
+	}
+
+	return false;
+}
+
+void LList::deleteFrom(LListNode* p, int brEl)
+{
+	int br = 0;
+	LListNode* curr;
+	LListNode* next;
+	if (p == nullptr)
+		curr = head;
+	
+	else 
+		curr = p->next;
+
+	while(br<brEl)
+	{
+		next = curr->next;
+		delete curr;
+		curr = next;
+		++br;
+	}
+	if (p == nullptr)
+		head = curr;
+	else
+		p->next = curr;
+}
+
+
+1. DRUGI POKUSAJ(Nije mozda sve dbr)
+bool deleteSublist(LinkedList* sublist)
+{
+    if(head==nullptr)
+    {
+        return false;
+    }
+    int count= 0;
+    LListNode* tmpSub = sublist->head;
+    LListNode* tmpSubPrev = nullptr;
+    while(tmpSub!=nullptr)
+    {
+        ++count;
+        tmpSubPrev=tmpSub;
+        tmpSub=tmpSub->next;
+    }
+    
+    LListNode* tmp= head;
+    LListNode* tmpPrev=nullptr;
+    tmpSub=tmpSubPrev;
+    while(tmp!=nullptr)
+    {
+        if(tmp->info==sublist->head->info)
+        {
+            LListNode* curr= tmp;
+            
+            LListNode* tmp2= sublist->head->next;
+            int i=0;
+            while(i<count && curr!=nullptr;)
+            {
+                curr=curr->next;
+                if(curr->info == tmp2->info)
+                {
+                    i++;
+                }
+                tmp2=tmp2->next;
+            }
+            if(i==count)
+                Obrisi(tmp,tmpPrev,tmpSub,tmpSub->next,count);
+        }
+        tmpPrev=tmp;
+        tmp=tmp->next;
+    }
+    return true;
+    
+}
+void Obrisi (LListNode* curr,LListNode* currPrev,LListNode* curr2,LListNode* currNext2, int n)
+{
+    if(curr ==nullptr)
+        return;
+     if(curr==head)
+    {
+        head=currNext2;
+    }
+    LListNode* tmp = curr;
+    while(tmp!=curr2)
+    {
+        LListNode* tmp2=tmp;
+        tmp=tmp->next;
+        freeNode(tmp2);
+    }
+    if(currPrev!=nullptr)
+    {
+        currPrev->next=currNext2;
+    }
+}
+
+DRUGI: //nije dovrsen
+
+void smestiti(char* key)
+{
+    unsigned int hash= h(key);
+    
+    unsigned int probe= hash;
+    
+    unsigned int i=1;
+    while(i<m && array[probe].status==2)
+    {
+        while(array[probe].next==-1)
+        {
+            probe=array[probe].next;
+        }
+        
+    }
+    
+}
+
+
+TRECI:
+Node* maxHeightDiff()
+{
+    if(root==nullptr)
+        return nullptr;
+    Node* toReturn;
+    int maxDiff=-1;
+    int max= findNodeWithMaxHeight(root, &toReturn,maxDiff);
+    return toReturn;
+        
+}
+
+int findNodeWithMaxHeight(Node* node, Node** returnNode, int& maxDiff)
+{
+    if(node==nullptr)
+        return 0;
+    
+     int leftHeight = findNodeWithMaxHeight(node->left, returnNode,maxDiff);
+     int rightHeight= findNodeWithMaxHeight(node->right,returnNode,maxDiff);
+     
+     if(abs(leftHeight-rightHeight)>maxDiff)
+     {
+         maxDiff=abs(leftHeight-rightHeight);
+         *returnNode= node;
+     }
+     int a=rightHeight;
+     if(leftHeight>rightHeight){a=leftHeight;}
+     return 1+a;
+}
+
+CETVRTI:
+void connectMaxAndMin()
+{
+    LinkedNodeInt* ptr = start;
+    LinkedNodeInt* fromMax=nullptr;
+    LinkedNodeInt* fromMin=nullptr;
+    SetAllNodeStatuses(0);
+    int max=0;
+    int min= INT_MAX;
+    
+    while(ptr!=nullptr)
+    {
+        if(ptr->status==0)
+        {
+            int rez=dfsHelper(ptr);
+        }
+        if(rez>max)
+        {
+            max=rez;
+            fromMax=ptr;
+        }
+        if(rez<min)
+        {
+            min=rez;
+            fromMin=ptr;
+        }
+        ptr=ptr->next;
+    }
+    if (fromMax != nullptr && fromMin != nullptr && fromMax != fromMin)
+    {
+        InsertEdge(fromMax, fromMin);
+    }
+    
+}
+
+int dfsHelper(LinkedNodeInt* ptr)
+{
+   StackAsArray stack(nodeNum);
+   stack.push(ptr);
+   ptr->status=1;
+   int obradjen =0;
+   while(!stack.isEmpty())
+   {
+       LinkedNodeInt* current = stack.pop();
+       LinkedNodeEdge* edge = current->adj;
+       while(edge!=nullptr)
+       {
+           if(edge->dest->status == 0)
+            {
+                stack.push(edge->dest);
+                edge->dest->status = 1;
+            }
+            edge = edge->link;
+       }
+       current->status=2;
+       obradjen++;
+   }
+   return obradjen;
+}

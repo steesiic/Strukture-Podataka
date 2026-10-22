@@ -1,0 +1,137 @@
+DRUGI: nije dobar skroz sigurno
+
+bool signup(int playerNumber, char* name,char* lastName,int yearBorn, int jerseyNumber) 
+{ 
+    unsigned int hash = h(playerNumber);
+    unsigned int i=1; 
+    unsigned int probe=hash;
+    while(i<m && array[probe].status==2
+            && array[probe].playerNumber!=playerNumber) 
+    { 
+        probe=(hash+c(i)) % m;
+        i++; 
+    } 
+    if(i==m) 
+    { 
+        cout<<"tablica je puna"; return false; 
+    } 
+    
+    if(array[probe].status==2 && array[probe].playerNumber==playerNumber) 
+    { 
+        cout<<"vec je prijavljen"; 
+        return false; 
+        
+    }
+    return true;
+    
+} 
+
+
+    unsigned int h(int key) 
+    { 
+        unsigned int a= 2654435761; 
+        return (key+a) >> (32-10); 
+    } 
+    
+    unsigned int c(int i)
+    {
+        return i*i;
+    } 
+    
+    int countPlayersBornIn(int key) 
+    { 
+            int total=0; 
+        for (int i=0;i<m;i++)
+        { 
+            if(array[i].status==2 && array[i].yearBorn==year) ++total;
+        } 
+        return total; 
+    
+    }
+
+TRECI:
+
+int countCloseParents(BSTNode* root, int n)
+{
+    if(root==nullptr)
+        return 0;
+    int count=0;
+    if(root->left !=nullptr && root->right!=nullptr)
+    {
+        if(abs(root->info - root->left->info)<=n
+            && abs(root->info - root->right->info)<=n)
+        {
+            count=1;       
+        }
+        
+    }
+    return count+count(root->left,n)+count(root->right,n);
+}
+
+CETVRTI:
+
+bool arePathsPossible(Node* start, Node* goal1,Node* goal2, Node* mid)
+{
+    setAllNodeStatuses(0);
+    
+    if(!bfsHelper(start,mid))
+        return false;
+        
+        setAllNodeStatuses(0);
+        if(!bfsHelper(mid,goal1))
+            return false;
+    
+         setAllNodeStatuses(0);
+        if(!bfsHelper(mid,goal2))
+            return false;
+        return true;
+}
+
+bool bfsHelper(Node* start, Node* end)
+{
+     if (start == nullptr || end == nullptr)
+        return false;
+    
+    Node* ptr = start;
+    Queue q= Queue(nodeNum);
+    q.enqueue(ptr);
+    ptr->status=1;
+    while(!q.isEmpty())
+    {
+      ptr=q.dequeue();
+      ptr->status=2;
+      Edge* edg= ptr->adj;
+      while(edg!=nullptr)
+      {
+          if(edg->dest->status==0)
+          {
+              edg->dest->status=1;
+              q.enqueue(edg->dest);
+              if(edg->dest==end && edg->dest->status!=2)
+              {
+                edg->dest->status=2;
+                return true;
+              }
+          }
+        edg=edg->link;
+      }
+    }
+    return false;
+}
+
+
+
+
+void setAllNodeStatuses(int s)
+{
+    Node* ptr=start;
+    while(ptr!=nullptr)
+    {
+        ptr->status=s;
+        ptr=ptr->next;
+    }
+    return;
+}
+
+
+

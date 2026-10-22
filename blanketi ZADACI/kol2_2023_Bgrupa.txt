@@ -1,0 +1,81 @@
+2. GRAFOVI
+int doesConnectedComponentExists(int k)
+{
+    toUndirected();
+    setStatusForAllNodes(0);
+    LinkedNodeInt* ptr =  start;
+    while(ptr!=nullptr)
+    {
+        int i=0; 
+        if(ptr->status==0)
+        {
+            i=dfsHelper(ptr);
+            if(i>k)
+            {
+                return 1; //postoji
+            }
+           
+        }
+         ptr=ptr->next;
+    }
+    return 0;
+}
+
+void toUndirected()
+{
+    LinkedNodeint* ptr = start;
+    while(ptr!=nullptr)
+    {
+        LinkedEdgeInt* edge=ptr->adj;
+        while(edge!=nullptr)
+        {
+            LinkedEdgeInt* check = edg->dest->adj;
+            while(check!=nullptr && check->dest!=ptr)
+            {
+               check=check->link;
+            }
+        if(check==nullptr)
+        {
+            edge->dest->adj=new LinkedEdgeInt(ptr,edge->dest->adj);
+        }
+        edge=edge->link;
+        }
+        ptr=ptr->link;
+    }
+}
+void setStatusForAllNodes(int s)
+{
+    LinkedNodeInt* ptr = start;
+    while(ptr!=nullptr)
+    {
+        ptr->status=s;
+        ptr=ptr->link;
+    }
+    return;
+}
+int dfsHelper(LinkedNodeInt* ptr) //ovo vljd nije sve dobro
+{
+    int rez=0;
+    StackAsArray stack(NodeNum);
+    stack.push(ptr);   //da li ovde treba .push ili ->push
+    ptr->status=2;
+    while(!stack->isEmpty())
+    {
+        ptr=stack->pop();
+        LinkedEdgeInt* edg= ptr->adj;
+        while(edg!=nullptr)
+        {
+            if(edg->dest->status==0)
+            {
+                stack->push(edg->dest);
+                edg->dest->status=2;
+            }
+            edg=edg->link;
+        }
+        ptr->status=3;//zasto ovde 3?
+        rez++;
+         ptr=ptr->next;
+    }
+   
+    return rez;
+}

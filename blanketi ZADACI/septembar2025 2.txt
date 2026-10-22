@@ -1,0 +1,106 @@
+DRUGI:
+
+unsigned int h(char*key)
+{
+    int i=0;
+    while(i!='\0')
+    {
+        h= h*101 +key[i];
+        i++;
+    }
+    return h;
+}
+unsigned int c(int i)
+{
+    return i*i;
+}
+
+Taksi* find(char* key)
+{
+    
+    unsigned int hash= h(key);
+    unsigned int probe= hash;
+    
+    int i=1;
+    while(i<m && array[probe].status!=2)
+    {
+        probe= (hash+c(i))% m;
+        i++;
+    }
+    
+    if(i==m)
+        return nullptr;
+    
+    if(array[probe].status==2 && array[probe].key == key)
+    {
+        return array[probe];
+    }
+    else
+        return nullptr;
+}
+
+
+void Add(Taksi t, char* key)
+{
+     unsigned int hash= h(key);
+    unsigned int probe= hash;
+    
+    int i=1;
+    while(i<m && array[probe].status==2)
+    {
+        probe= (hash+c(i))% m;
+        i++;
+    }
+    if(i!=m && array[probe].status<2)
+    {
+        array[probe]=t;
+        array[probe].status=2;
+    }
+}
+
+CETVRTI: //nije vrv sve dobro al donekle ima smisla:
+int numNeighbours(Node* host, int n)
+{
+    Node* ptr = host->next;
+    int count=0;
+    while(ptr!=nullptr)
+    {
+        count+= bfsHelper(host,ptr,n);
+        ptr= ptr->next;
+    }
+    return count;
+}
+
+int bfsHelper(Node* start, Node* end, int n)
+{
+    setAllNodeStatuses(0);
+    
+    Node* ptr = start;
+    Queue q(nodeNum);
+    q.enqueue(ptr);
+    ptr->status=1;
+    bool nadjen=false;
+    int count = 0;
+    while(!nadjen)
+    {
+        Node* current = q.dequeue();
+        Edge* edge = current->adj;
+        
+        while(edge!=nullptr)
+        {
+            if(edge->dest>status==0)
+            {
+                q.enqueue(edge->dest);
+                edge->dest->status=1;
+                count++;
+                if(edge->dest== end && count<n)
+                {
+                    nadjen = true;    
+                    return 1;
+                }
+                edge=edge->link;
+            }
+        }
+        return 0;
+    }
+}

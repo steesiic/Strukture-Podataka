@@ -1,0 +1,237 @@
+1.
+void rearrange(int v1,int v2, int k)
+{
+    if(head==nullptr)
+        return;
+    int j=0;
+    Node* ptrK = head;
+    while(j<k)
+    {
+        ptrK=ptrK->next;
+        j++;    
+    }
+    if(ptrK == nullptr) 
+        return;
+            
+    Node* preK=head;
+    Node* preKPrev=nullptr;
+    Node* posleK=ptrK->next;
+    Node* posleKPrev = ptrK;
+    
+    while(preK!=ptrK)
+    {
+       while(preK->info >= v1)
+       {
+           preKPrev=preK;
+           preK=preK->next;
+       }
+       if(preK==ptrK) break;
+       while(posleK->info <= v2)
+       {
+           posleKPrev=posleK;
+           posleK=posleK->next;
+       }
+       Node *tmp1,*tmp2,*tmp3,*tmp4;
+       tmp1=preKPrev;
+       tmp2=preK;
+       tmp3=posleKPrev;
+       tmp4=posleK;
+       Swap(tmp1,tmp2,tmp3,tmp4);
+       
+       preKPrev=preK;
+       preK=preK->next;
+       posleKPrev=posleK;
+       posleK=posleK->next;
+    }    
+}
+
+void Swap(Node* prev1, Node* ptr1, Node* prev2, Node* ptr2) //ne moramo gledati svaki slucaj jer znamo da nisu jedan pored drugog i da ne mogu biti isti
+//(jedan je pre K, drugi posle K i uvek je ptr1 ispred ptr2)
+{
+	if(ptr1==ptr2)
+		return;	
+
+	Node* tmp=ptr1->next;
+	ptr1->next = ptr2->next;
+	ptr2->next= tmp;
+	if(prev1!=nullptr)
+		prev1->next= ptr2;
+	prev2->next = ptr1;
+	if(ptr1==head)
+		head=ptr2;	
+}
+
+3.
+
+BSTNode* findDeepestLeaf()
+{
+    if(root==nullptr)
+        return;
+    if(root->left==nullptr && root->right==nullptr)
+        return root;
+    
+    int maxDepth=-1;
+    int result = nullptr;
+    LeafSearch(root,0,maxDepth,result);
+    
+    reeturn result;
+}
+
+
+void LeafSearch(BSTNode* node, int depth, int& maxDepth, BSTNode* result)
+{
+    if(node->left==nullptr&& node->right==nullptr)
+    {
+        if(depth>maxDepth)
+            maxDepth=depth;
+    }
+    
+    if(node->left!=nullptr)
+    {
+        LeafSearch(node->left, depth+1, maxDepth, result);
+    }
+     if(node->right!=nullptr)
+    {
+        LeafSearch(node->right, depth+1, maxDepth, result);
+    }
+}
+
+3. TAKE2:
+BSTNode* findDeepestLeaf()
+{
+    if(root==nullptr)
+        return nullptr;
+    if(root->left==nullptr && root->right==nullptr)
+        return root;
+    
+    BSTNode* result = nullptr;
+    int level=0;
+    int maxLevel=0;
+    
+    DeepestLeaf(root,result,level,maxLevel);
+    return result;
+}
+
+void DeepestLeaf(BSTNode* node, BSTNode*& result,int level, int& maxLevel)
+{
+    if(node==nullptr)
+        return;
+        
+        if(node->left!=nullptr)
+            findDeepestLeaf(node->left,result,1+level,maxLevel);
+        
+        if(node->right!=nullptr)
+            findDeepestLeaf(node->right,result,1+level,maxLevel);
+        
+        if(level>maxLevel)
+        {
+            maxLevel=level;
+            result=node;
+        }
+        return;
+}
+
+4. slicno kao jecino:
+bool canReach(int A, int B,int noNodes)
+{
+    LinkedNodeInt* a= findNode(A);
+    LinkedNodeInt* b= findNode(B);
+    setAllNodeStatuses(0);
+    
+    int count = bfsHelper(a,b);
+    if(count>0 && count<= noNodes)
+        return true;
+        
+    return false;
+    
+}
+
+
+int bfsHelper(LinkedNodeInt* ptr, LinkedNodeInt* ptr2)
+{
+    if(ptr==nullptr)
+        return INT_MAX;
+    Queue q = Queue(nodeNum);
+    q.enqueue(ptr);
+    ptr->status=1;
+    int i=1;
+    while(!q.isEmpty())
+    {
+        LinkedNodeInt* current = q.pop();
+        LinkedNodeEdge* edge = current->adj;
+        while(edge!=nullptr)
+        {   
+            if(edge->dest->status==0)
+            {
+                q.enqueue(edge->dest);
+                edge->dest->status=1;
+            }
+            if(edge->dest == ptr2)
+            {
+                return i+1;
+            }
+            edge=edge->link;
+        }
+        i++;
+        ptr->status=2;
+    }
+    return i;
+}
+
+
+
+4. CHATGPT RESENJE:
+bool canReach(int A, int B, int noNodes)
+{
+    LinkedNodeInt* a = findNode(A);
+    LinkedNodeInt* b = findNode(B);
+    if(a == nullptr || b == nullptr) 
+        return false;
+
+    setAllNodeStatuses(0);
+    
+    int count = bfsHelper(a, b);
+    if(count > 0 && count <= noNodes)
+        return true;
+        
+    return false;
+}
+
+
+int bfsHelper(LinkedNodeInt* ptr, LinkedNodeInt* ptr2)
+{
+    if(ptr == nullptr)
+        return 0;
+
+    Queue q(nodeNum);
+    q.enqueue(ptr);
+    ptr->status = 1;
+
+    int level = 1; // broj čvorova u putu
+    
+    while(!q.isEmpty())
+    {
+        LinkedNodeInt* current = q.pop();
+
+        LinkedNodeEdge* edge = current->adj;
+        while(edge != nullptr)
+        {
+            if(edge->dest->status == 0)
+            {
+                edge->dest->status = 1;
+                q.enqueue(edge->dest);
+            }
+
+            if(edge->dest == ptr2)
+            {
+                return level + 1; // uključuje i krajnji čvor
+            }
+
+            edge = edge->link;
+        }
+
+        current->status = 2;
+    }
+
+    return 0; // nema puta
+}

@@ -1,0 +1,81 @@
+2.GRAFOVI
+int subgraphCnt(int p)
+{
+    toUndirected();
+    setStatusForAllNodes(0);
+    int count=0;
+    
+    LinkedNodeInt* ptr=start;
+    
+    while(ptr!=nullptr)
+    {
+        if(ptr->status==0)
+        {
+            if(dfsHelper(ptr,p))
+                count++;
+            ptr-ptr->next;
+        }
+    }
+    return count;
+}
+
+void toUndirected()
+{
+    LinkedNodeInt* ptr= start;
+    while(ptr!=nullptr)
+    {
+        LinkedNodeInt* edge=ptr->adj;
+        while(edge!=nullptr)
+        {
+            LinkedNodeInt* check = edge->dest->adj;
+            while(check!=nullptr && check->dest!=ptr)
+            {
+                check=check->link;
+            }
+            if(check==nullptr)
+            {
+                    edge->dest->adj = new LinkedEdgeInt(ptr,edge->dest->adj);
+            }
+            edge=edge->link;
+        }
+        ptr=ptr->next;
+    }
+}
+void setStatusForAllNodes(int s)
+{
+    LinkedNodeInt* ptr = start;
+    while(ptr!=nullptr)
+    {
+        ptr->status=s;
+        ptr=ptr->next;
+    }
+    return;
+}
+bool dfsHelper(LinkedNodeInt* node, int p)
+{
+    bool containsP = false;
+    LinkedNodeInt* ptr = node;
+    Stack s= stack(nodeNum);
+    s.push(ptr);
+    ptr->status=1;
+    while(!s.isEmpty())
+    {
+        ptr=s.Pop();
+        if(ptr->info>p)//cvor koji saljemo moze takodje da bude =p
+            containsP=true;
+        LinkedEdgeInt* edg= ptr->adj;
+        while(edg!=nullptr)
+        {
+            if(edg->dest->status==0)
+            {
+                s.push(edg->dest);
+                edg->dest->status=1;
+                if(edg->dest->info==p)
+                    containsP=true;
+            }
+            edg=edg->link;
+        }
+        ptr->status=2;
+    }
+    return containsP;
+}

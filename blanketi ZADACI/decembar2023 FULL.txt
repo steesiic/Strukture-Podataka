@@ -1,0 +1,273 @@
+1. MOJE RESENJE: //nije skroz dobro
+bool reverseOrder(int first, int last)
+{
+    if(head==nullptr)
+        return false;
+    Node* curr= head;
+    Node*currPrev=nullptr;
+    while(curr!=nullptr && curr->info!= first)
+    {
+        if(curr->info==last)
+            return false;
+        currPrev=curr;
+        curr=curr->next;
+    }
+    if(curr==nullptr)
+        return false;
+    Node* firstNode = curr;
+    Node* firstNodePrev=currPrev;
+    
+    Node* lastNode = curr->next;
+    Node* lastNodePrev= curr;
+    int i =0;
+    while(lastNode->info!=last && lastNode!=nullptr)
+    {
+        i++;
+        lastNodePrev= lastNode;
+        lastNode=lastNode->next;
+    }
+    if(lastNode==nullptr)
+        return false;
+    
+    int j=0;
+    Swap(firstNode,lastNode,firstNodePrev,lastNodePrev);
+    
+    curr= lastNode->next;
+    prevCurr=lastNode;
+     int k = i/2;
+    while(j!=(i/2))
+    {
+        Node* curr2 = lastNode->next;
+        Node* currPrev2 = lastNode;
+        int br=0;
+        while(br!=k)
+        {
+            currPrev2=curr2;
+            curr2=curr2->next;
+        }
+        
+        Swap(curr,curr2,currPrev.currPrev2);
+        curr= currPrev->next;
+        currPrev=curr;
+        curr=curr->next;
+        currPrev2=currPrev;
+        curr2=curr;
+        k--;
+        br++;
+        
+    }
+}
+
+
+void Swap(Node* firstNode, Node* lastNode,Node* firstNodePrev,Node* lastNodePrev)
+{
+    Node* pomA=firstNode;
+    Node* pomB=lastNode;
+    firstNodePrev->next; pomA;
+    lastNodePrev->next = pomB;
+    Node* pom = pomA->next;
+    pomA->next= pomB->next;
+    pomB->next= pom;
+    if(head==pomA)
+        head=pomB;
+}
+
+1. CHATGPT RESENJE(BOLJE MNOGO):
+bool reverseOrder(int first, int last)
+{
+    if(head==nullptr)
+        return false;
+    Node* curr= head;
+    Node*currPrev=nullptr;
+    while(curr!=nullptr && curr->info!= first)
+    {
+        if(curr->info==last)
+            return false;
+        currPrev=curr;
+        curr=curr->next;
+    }
+    if(curr==nullptr)
+        return false;
+    Node* firstNode = curr;
+    Node* firstNodePrev=currPrev;
+    
+    Node* lastNode = curr->next;
+    Node* lastNodePrev= curr;
+    while(lastNode!=nullptr && lastNode->info!=last  )
+    {
+        lastNodePrev= lastNode;
+        lastNode=lastNode->next;
+    }
+    if(lastNode==nullptr)
+        return false;
+    
+    Node* afterLast=lastNode->next;
+    
+    Node* prev = afterLast;
+    Node* currRev = firstNode;
+    
+    while(currRev!=afterLast)
+    {
+        Node* next=currRev->next;
+        currRev->next = prev;
+        prev= currRev;
+        currRev=next;
+    }
+    if(firstNodePrev!=nullptr)
+    {
+        firstNodePrev->next=lastNode;
+    }
+    else
+    {
+        head=lastNode;
+    }
+    
+    return true; 
+}
+
+
+
+2. SIGURNO NIJE SKROZ DOBAR
+
+
+bool enlist(int index,char* name,char* lastName,int yearEnrolled)
+{
+    //m1 - osnovna tabela
+    //m2- deo za sinonime
+    //m=m1+m2
+    long probe= h(index);
+    if (hasEnlisted(index))
+        return false;
+
+    if(!array[probe].free)
+
+    {
+        while (array [probe].next != -1)
+        {
+            probe = array[probe].next;
+        }
+        
+        long tail = probe;
+        probe = g(probe);
+        while(!array[probe].free && probe!=tail)
+        {
+            probe=g(probe);
+        }
+        if(probe==tail)
+        {
+            return false;
+        }
+        array[tail].next = probe;
+    } 
+    array[probe]=new Student(name,lastName,yearEnrolled);
+    array[probe].status=2;
+    array[probe].free=false;
+    array[probe].next=-1;
+    count++;
+    return true;
+}
+unsigned int h(int key)
+{
+    return key% m1;
+}
+long g(long probe)
+{
+    return m1+((probe-m1+1)%m2);
+}
+
+
+bool hasEnlisted(int index)
+{
+    long probe= h(index);
+    while(array[probe].next==-1 && array[probe]!=index)
+    {
+         if(array[probe]==index){return true;}
+        probe=array[probe].next;
+    }
+   
+    return false;
+}
+
+3. CHATGPT
+
+int countNodes()
+{
+    if(root == nullptr)
+        return 0;
+    
+    return count(root).count;
+}
+
+// Struktura za čuvanje broja pobeda i broja čvorova koji zadovoljavaju uslov
+struct Result {
+    int winsDom;
+    int winsGos;
+    int count;
+};
+
+Result count(LinkedNode* node)
+{
+    if(node == nullptr)
+        return {0, 0, 0};
+
+    Result left = count(node->left);
+    Result right = count(node->right);
+
+    // Ukupan broj pobeda u podstablu
+    int totalDom = left.winsDom + right.winsDom + (node->info->dom > node->info->gos ? 1 : 0);
+    int totalGos = left.winsGos + right.winsGos + (node->info->gos > node->info->dom ? 1 : 0);
+
+    // Broj čvorova koji zadovoljavaju uslov
+    int totalCount = left.count + right.count;
+    if(totalDom > totalGos)
+        totalCount += 1;
+
+    return {totalDom, totalGos, totalCount};
+}
+
+
+4. NIJE DOBAR
+int LongestSimpleCycle()
+{
+    int max=0;
+    LinkedNodeInt* ptr = start;
+    while(ptr!=nullptr)
+    {
+        int i= dfsHelper(ptr);
+        if(i>max)
+        {
+            max=i;
+        }
+        ptr=ptr->next;
+    }
+    return max;
+}
+
+
+
+int dfsHelper(LinkedNodeInt* start)
+{
+    LinkedNodeInt* ptr=start;
+    setAllNodeStatuses(0);
+    StackAsArray<LinkedNodeInt*> s= new StackAsArray<LinkedNodeInt*>(nodeNum);
+    s.push(ptr);
+    int count=0;
+    ptr->status=1;
+    while(!s.isEmpty())
+    {
+        LinkedNodeInt* current = s.pop();
+        LinkedNodeEdge* edge= curent->adj;
+        while(edg!=nullptr)
+        {
+            if(edge->dest->status==0)
+            {
+                s.push(edge->dest);
+                edge->dest->status=1;
+            }
+            edge=edge->link;
+        }
+        current->status=2;
+        count++;
+    }
+    return count;
+}

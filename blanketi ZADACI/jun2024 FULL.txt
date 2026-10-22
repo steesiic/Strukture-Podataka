@@ -1,0 +1,176 @@
+1.
+void groupElements()
+{
+    if(head==nullptr||head->next==nullptr||head->next->next==nullptr)
+    return;//nema potrebe proveravati ako lista ima manje od 3el
+    Node* curr = head;
+   
+    while(curr!=nullptr)
+    {
+         Node* tmp = curr->next;
+        Node* tmpPrev= curr;
+       while(tmp!=nullptr) 
+       {
+           if(tmp->info==curr->info)
+           {
+               tmpPrev->next = tmp->next;
+               tmp->next = curr->next;
+               curr->next=tmp;
+               curr=curr->next;
+               tmp=tmpPrev->next;
+               //nastavlja pretragu od mesta gde nadjemo prvi
+               
+           }
+           else
+           {
+               tmpPrev=tmp;
+               tmp=tmp->next;
+           }
+       }
+      curr->curr->next;
+    }
+ 
+}
+
+
+
+int maxLevel()
+{
+    if(root==nullptr)
+        return -1;
+        QueueAsArray<BSTNode*> queue(numOfElements);
+        queue.enqueue(root);
+        int currentLevel=0;
+        int maxLevel=0;
+        int maxCount=0;
+        while(!queue.isEmpty())
+        {
+            int levelSize= queue.NumberOfElements();
+            if(levelSize>maxCount)
+            {
+                maxCount=levelSize;
+                maxLevel=currentLevel;
+            }
+            for(int i=0;i<levelSize;i++)
+            {
+                if(p->left!=nullptr)
+                    queue.enqueue(p->left);
+                if(p->right !=nullptr)
+                    queue.enqueue(p->right);
+            }
+            currentLevel++;
+        }
+        return maxLevel;
+}
+
+
+4.
+
+
+
+void printMaxConnectedComponentNodes()
+{
+    toUndirected();
+    setAllNodeStatuses(0);
+    int max=-1;
+    LinkedNodeInt* ptr=start;
+    LinkedNodeInt* maxptr=nullptr;
+    while(ptr!=nullptr)
+    {
+        if(ptr->status==0)
+        {
+            int i = dfs(ptr);
+            if(i>max)
+            {
+                max=i;
+                maxptr=ptr;
+            }
+        }
+     
+            ptr=ptr->next;
+    }
+    setAllNodeStatuses(0);
+     LinkedNodeEdge* edg2= maxptr->adj;
+    while(maxptr!=nullptr)
+    {
+        maxptr->visit(); //print
+        maxptr->status=1; /odstampan
+        LinkedNodeEdge* edg= maxptr->adj;
+       
+        while(edg!=nullptr)
+        {
+            edg->dest->visit();
+            edg->dest->status=1;
+            
+            edg=edg->link;
+        }
+        
+        maxptr= edg2->dest;
+        edg2=edg2->link;
+        
+    }
+    
+}
+
+
+
+
+
+void toUndirected()
+{
+    LinkedNodeInt* ptr = start;
+    while(ptr!=nullptr)
+    {
+        LinkedEdgeInt* edg = ptr->adj;
+        while(edg!=nullptr)
+        {
+            LinkedEdgeInt* check = edg->dest->adj;
+            while(check!=nullptr && check->dest!=ptr)
+            {
+                check=check->link;
+            }
+            if(check==nullptr)
+            {
+                edg->dest->adj= new LinkedEdgeInt(ptr,edge->dest->adj);
+            }
+            edg=edg->link;
+        }
+        ptr=ptr->next;
+    }
+}
+void setAllNodeStatuses(int s)
+{
+    LinkedNodeInt* ptr = start;
+    while(ptr!=nullptr)
+    {
+        ptr->status=s;
+        ptr=ptr->next;
+    }
+}
+
+int dfs(LinkedNodeInt* ptr)
+//da li ovo radi dobro ili nece racunati korektno ako u adj listi prvog cvora nema dest za svaki drugi?
+{
+    int count=0;
+    StackAsArray stack(nodeNum);
+    stack.push(ptr);
+    ptr->status=1;
+    
+    while(!stack.isEmpty())
+    {
+        ptr=stack.pop();
+        ptr->status=2;
+        count++;
+        LinkedEdgeInt* edg= ptr->adj;
+        while(edg!=nullptr)
+        {
+            if(edg->dest->status==0)
+            {
+                stack->push(edge->dest);
+                edge->dest->status=1;
+            }
+            edge=edge->link;
+        }
+    }
+    return count;
+}

@@ -1,0 +1,23 @@
+3.
+int countNodesinRange(BSTNode* root, int min, int max)
+{
+    if(root == nullptr)
+        return 0;
+    
+    
+    if(if root->info<= max && root->info >=min)
+    {
+        return 1+ countNodesInRange(root->left,min,max)
+                + countNodesInRange(root->right,min,max);
+    }
+     if(root->info>max)
+    {
+        return countNodesInRange(root->left,min,max);
+    }
+    else if(root->info<=min)
+    {
+        return countNodesInRange(root->right,min,max);
+    }
+    
+    
+}

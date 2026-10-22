@@ -1,0 +1,194 @@
+PRVI:
+
+Llist* SplitOrMove()
+{
+  LList* novaLista = new LList();
+novaLista->head=nullptr;
+if(isEmpty()) return novaLista;
+
+LListNode* currPrev = nullptr;
+LListNode* curr  = head;
+
+while (curr!=nullptr)
+{
+    LListNode tmpPrev=curr;
+    LListNode tmp = curr->next;
+	while(tmp !=nullptr && tmp->info!=curr->info)
+	{
+		tmpPrev=tmp;
+		tmp=tmp->next;	
+	}
+		
+	LListNode* forMove;
+	if(tmp==nullptr)
+	{
+		forMove= curr;
+		if(currPrev==nullptr)
+		{
+			head=head->next;
+			curr=head;
+		}	
+		else
+		{
+			currPrev->next= curr->next;
+			curr=curr->next;
+		}
+
+	}
+	else
+	{
+		forMove=tmp;
+		tmpPrev->next = tmp->next;
+		currPrev=curr;
+		curr=curr->next;	
+	}
+	forMove->next = novaLista->head;
+	novaLista->head=forMove;
+
+
+}
+return novaLista;
+}
+
+DRUGI:
+    unsigned int h(char* key)
+    {
+        int i=0;
+        while(key[i]!='\0')
+        {
+            h= h*101 + key[i];
+        }
+            return h%m;
+    }
+    
+    unsigned int c(int i)
+    {
+        return i*i;
+    }
+    
+    
+    void insertInto(char* ime, char* prezime, double prosek, char* JMBG)
+    {
+        //0 slobodan, 1 obrisan, 2 zauzet
+        unsigned int hash= h(JMBG);
+        unsigned int probe=hash;
+        Student s(ime,prezime,prosek,JMBG);
+        while(array[probe].next!=-1 && array[probe].status>1)
+        {
+            if(array[probe].status<2) //ako je mesto slobodno ili prethodno obrisano
+            {
+                array[probe]=s;
+                array[probe].status=2;
+                array[probe].next=-1;
+                count++;
+                break;
+                
+            }
+            if(array[probe].next==-1)
+            {
+                unsigned tail = probe;
+                int i=1;
+                while(i<m && array[probe].status==2)
+                {
+                    probe=(hash+c(i))%m;
+                    i++;
+                }
+                if(i==m)
+                {
+                    cout<<"puna tabela";
+                    return;
+                }
+                array[probe] = s;
+                array[probe].status=2;
+                array[probe].next=-1;
+                array[tail].next= probe;
+                count++;
+            }
+            
+        }
+    }
+
+TRECI:
+
+int brojCvorova(int keyMin, valueMin)
+{
+    if(root==nullptr)
+    {
+        return 0;
+    }
+    bool predak = false;
+    return brojCvorovaCount(root,keyMin,valueMin,predak);
+}
+
+int brojCvorovaCount(BSTNode* node, int keyMin,int valueMin,bool predak)
+{
+    if(node==nullptr)
+        return 0;
+    
+    bool uslov1= node->key > keyMin;
+    bool uslov2 = predak;
+    int count = 0;
+    if(uslov1 && uslov2)
+        ++count;
+        
+    bool noviPredak = predak || (node->value > valueMin);    
+    
+    count+= brojCvorovaCount(node->left, keyMin,valueMin, noviPredak);
+    count+= brojCvorovaCount(node->right, keyMin,valueMin, noviPredak);
+    return count;
+    
+}
+
+CETVRTI:
+
+int BridgeCount(int a, int b)
+{
+    LinkedNodeInt* start = findNode(a);
+    LinkedNodeInt* end = findNode(b);
+    if(start==nullptr || end=nullptr)
+        return -1;
+        
+    setAllNodeStatuses(0);
+    int min = INT_MAX;
+    
+    min= bfsHelper(start,end);
+    
+    if(min>0)
+        return min;
+    else
+        cout<<"ne postoji put izmedju a i b";
+    
+    return
+}
+
+int bfsHelper(LinkedNodeInt* start, LinkedNodeInt* end)
+{
+    int count=0;
+    LinkedNodeInt* ptr= start;
+    //statusi: 0- neobradjen, 1- u strukturi, 2- obradjen
+    Queue q(nodeNum);
+    q.enqueue(ptr);
+    ptr->status=1;
+    while(!q.isEmpty())
+    {
+        LinkedNodeInt* current = q.dequeue();
+        LinkedNodeEdge* edge = current->adj;
+        while(edge!=nullptr)
+        {
+            if(edge->dest->status==0)
+            {
+                q.enqueue(edg->dest);
+                edge->dest->status=1;
+                count++;
+            }
+            if(edge->dest->info==b)
+            {
+                return count;
+            }
+            edge=edge->link;
+        }
+        current->status=2;
+    }
+    return -1;
+}
+

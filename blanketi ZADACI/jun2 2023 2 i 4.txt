@@ -1,0 +1,83 @@
+	2. jecino resenje, ne kontam bas
+unsigned int hash(char* ime, char* prezime, char* jmbg)//hash(char* key)
+{
+    unsigned int a= 2654437269u;
+    unsigned int h=0;
+    int i=0;
+    while(i<strlen(ime))
+    {
+        h=h*101+ime[i];
+        i++;
+    }
+    i=0;
+    while(prezime[i]!='\0')
+    {
+         h=h*101+prezime[i];
+        i++;
+    }
+    i=0;
+    while(jmbg[i]!='\0')
+    {
+        h=h*101+jmbg[i];
+        i++;
+        
+    }
+    return(h*a)>>(32-14);
+}
+unsigned int c(unsigned int i){return i*i;}
+
+void find(char* ime, char* prezime, char* jmbg, int& god, dobule& prosek, int& index)
+{
+    unsigned int h = hash(ime,prezime,jmbg);
+    unsigned int probe;
+    int i=1;
+    probe=h;
+    while(i<m && array[probe].status==2)
+    {
+        if(strcmp(array[probe].jmbg,jmbg)==0)
+        {
+            god=array[probe].god;
+            prosek = array[probe].prosek;
+            index = array[probe].index;
+            return;
+        }
+        probe=(h+c(i))%m;
+        i++;
+    }
+}
+
+4.
+bool isCyclic()
+{
+    Node* ptr=start;
+    SetAllNodeStatuses(0); //i ova f-ja mora da se napise, napisana na drugim blank.
+    
+    while(ptr!=nullptr)
+    {
+        if(ptr->status==0)
+        {
+            if(dfs(ptr))
+            {
+                return true;
+            }
+            ptr=ptr->next;
+        }
+    }
+    return false;
+}
+
+bool dfs(Node* ptr)
+{
+    ptr->status=1;
+    Edge edg=ptr->adj;
+    while(edg!=nullptr)
+    {
+        if(edg->dest->status==1)
+            return true;
+        else if((edg->dest->status==0)&& dfs(edg->dest))
+            return true;
+        edg=edg->link;
+    }
+    ptr->status=2;
+    return false;
+}

@@ -1,0 +1,60 @@
+1.
+
+info(start) <- A[0]
+
+
+
+i=1
+while(i<N)
+
+ LOC<-start
+ LOCP<-null
+	while(info(LOC)<=A[i])
+		LOCP<-LOC
+		LOC<-link(LOC)
+	end while
+
+	novi<-getNode()
+	info(novi)<-A[i]
+	if(LOC=start)
+	
+		link(novi)<-start
+		start<-novi
+	
+	else
+		link(LOCP)<-novi
+		link(novi)<-LOC
+		
+	end if		
+
+
+	i++
+end while
+
+
+2.
+Zameni(T,S1,S2,S3)
+
+
+i <- INDEX(T,S1)
+
+while(i>0)
+	if(i>LENGTH(S3)) then
+		PS<-SUBSTRING(T,i-LENGTH(S3),LENGTH(S3))
+	else
+		PS<-""
+	endif
+
+	if(PS=S3)
+		L1<- SUBSTRING(T,1,i-1)
+		L2<-SUBSTRING(T,i+LENGTH(S1),LENGHT(T)-(i+LENGHTH(S1))+1)
+		T<-CONCAT(L1,S2)
+		T<-CONCAT(T,L2)
+		i<-INDEX(L2,S1) //proveravam da li u ostatku teksta ima pojave S1(bice i>0 ako ima)
+		if(i>0)
+			i<- i+LENGTH(L1)+LENGTH(S2)
+		end if
+	end if
+end while
+		
+

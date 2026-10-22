@@ -1,0 +1,158 @@
+PRVI: //nije potpuno tacan
+
+double Calculate(SLList& IsIzmenjeni)//1 ako dodje do prebacivanja, inace 0
+{
+    if(IsIzmenjeni.head ==nullptr)
+        return 0;
+        
+  
+    if(head==nullptr)
+    {
+      SLListNode* temp = IsIzmenjeni.head;
+      IsIzmenjeni.head=IsIzmenjeni.head->next;
+      head = temp;
+      head->next = nullptr;
+    }
+      SLListNode* curr =    head;
+     // SLListNode* currPrev = nullptr;
+      SLListNode* drugi= IsIzmenjeni.head;
+      SLListNode* drugiPrev = nullptr;
+            
+        while(drugi!=nullptr)
+        {
+            
+            if (drugi->brBodova < head->brBodova)
+            {
+                drugi->next = head;
+                head = drugi;
+            }
+            else
+            {
+                curr=head;
+                  while(curr->brBodova <= drugi->brBodova &&
+                        curr!=nullptr)
+                {
+                  //  currPrev = curr;
+                    curr = curr->next;
+                }
+                SLListNode* currNext = curr->next;
+                curr->next = drugi;
+                if(drugiPrev==nullptr)
+                    IsIzmenjeni.head=drugi->next;
+                else
+                    drugiPrev->next = drugi->next;
+               
+                drugi->next = curr->next;
+                
+                //currPrev= curr;
+                curr = curr->next;
+                drugiPrev= drugi;
+                drugi = drugi->next;  
+            }
+            
+        } 
+    return 1;
+}
+
+TRECI:
+
+int deleteSingleLeafParents(BSTNodeInt* root)
+{
+    if (root==nullptr)
+        return 0;
+    
+    bool imaLevog= (root->left!=nullptr);
+    bool imaDesnog = (root->right!=nullptr);
+    int count=0;
+    
+    if(imaDesnog)
+        count+= deleteSingleLeafParents(root->right);
+    
+    if(imaLevog)
+        count+= deleteSingleLeafParents(root->left);
+    
+    if(imaLevog && !imaDesnog)
+    {
+        if(root->left->left==nullptr && root->left->right==nullptr)
+        {
+           BSTNodeInt* tmp = root->left;
+           root = root->left;
+           delete tmp;
+           count++;
+        }
+       
+    }    
+    if(!imaLevog && imaDesnog)
+    {
+        if(root->right->left==nullptr&&root->right->right==nullptr)
+        {
+           BSTNodeInt* tmp = root->right;
+           root = root->right;
+           delete tmp;
+            count++;
+        }
+        
+    }
+    
+    return count;
+    
+}
+
+CETVRTI:
+
+int countEdgesSmallestSubgraph()
+{
+    int min= INT_MAX;
+    
+    setAllNodeStatuses(0);
+    LinkedNodeInt* ptr=start;
+    
+    while(ptr!=nullptr)
+    {
+        int n = dfs(ptr);
+        if(n>0 && n<min)
+        {
+            min=n;
+        }
+        ptr=ptr->next;
+    }
+}
+
+int dfs(LinkedNodeInt* ptr)//0- neobradjen, 1- u strukturi, 2- obradjen
+{
+    if(ptr->status==2)
+        return 0;
+    int count=0;
+    Stack s(nodeNum);
+    s.push(ptr);
+    ptr->status=1;
+    while(!s.isEmpty())
+    {
+        LinkedNodeInt* current = s.pop();
+        current->status= 2;
+        LinkedNodeEdge* edge  = current->adj;
+        while(edge!=nullptr)
+        {
+            if(edg->dest->status==0)
+            {
+                s.push(edge->dest);
+                edge->dest->status=1;
+                count++;
+            }
+            edge=edge->link;
+        }
+    }
+    return count;
+}
+
+void setAllNodeStatuses(int s)
+{
+    LinkedNodeInt* ptr= start;
+    while(ptr!=nullptr)
+    {
+        ptr->status= s;
+        ptr=ptr->next;
+    }
+    return;
+}
+

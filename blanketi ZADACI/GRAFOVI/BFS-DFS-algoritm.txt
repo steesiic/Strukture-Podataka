@@ -1,0 +1,87 @@
+<<BFS>>
+bool BFSHelper(LinkedNodeInt* ptr)
+{
+    if(start == nullptr)
+        return;
+    QueueAsArray q = new QueueAsArray(nodeNum);
+    q.enqueue(ptr);
+    ptr->status = 1;
+    while(!q.isEmpty())
+    {
+        LinkedNodeInt* current = q.dequeue();
+        LinkedEdgeInt* edge = current->adj;
+        while(edge != nullptr)
+        {
+            if(edge->dest->status == 0)
+            {
+                q.enqueue(edge->dest);
+                edge->dest->status = 1;
+            }
+            edge = edge->link;
+        }
+        current->status = 2;
+    }
+    return true;
+}
+_______________________________________________________________
+
+<<ITERATIVNI_DFS>>
+bool DFSHelper(LinkedNodeInt* ptr)
+{
+    if(start == nullptr)
+        return;
+   StackAsArray<LinkedNodeInt*> s(nodeNum);
+    s.push(ptr);
+    ptr->status = 1;
+    while(!s.isEmpty())
+    {
+        LinkedNodeInt* current = s.pop();
+        LinkedEdgeInt* edge = current->adj;
+        while(edge != nullptr)
+        {
+            if(edge->dest->status == 0)
+            {
+                s.push(edge->dest);
+                edge->dest->status = 1;
+            }
+            edge = edge->link;
+        }
+        current->status = 2;
+    }
+    return true;
+}
+______________________________________________________________________
+
+<<RekurzivniDFS>>
+void RekurzivniDFS(LinkedNodeInt* ptr)
+{
+    if(ptr == nullptr)
+        return;
+    ptr->status = 1;
+    
+    LinkedEdgeInt edge = ptr->adj;
+    while(edge != nullptr)
+    {
+        if(edge->dest->status == 0)
+        {
+            RekurzivniDFS(edge->dest);
+        }
+        edge = edge->link;
+    }
+    ptr->status = 2;
+}
+
+Kada se koristi BFS?
+Kada nam je važna minimalna udaljenost između čvorova.
+Primer: Pronaći najkraći put u neponderisanom grafu.
+Kada želimo da pretražujemo po slojevima ili nivoima.
+Primer: Širina (level-order) obilazak stabla.
+Kada je graf nevelik i širok, jer BFS može brzo eksplodirati memorijski.
+
+Kada se koristi DFS?
+Kada želimo da istražimo svu granu do kraja pre nego što se vratimo.
+Kada treba proveriti postojanje puta ili komponente povezanosti.
+Koristi se u algoritmima koji zahtevaju rekurzivno istraživanje ili backtracking:
+Topološko sortiranje
+Pronalaženje ciklusa
+Rešavanje labirinta ili sudoku

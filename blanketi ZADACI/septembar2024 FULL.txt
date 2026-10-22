@@ -1,0 +1,199 @@
+PRVI:
+
+void selectSort(DLLNode* head)
+{
+	if(head==nullptr || //head==tail head->next==nullptr)
+	return;
+	
+	DLLNode* i=head;
+	DLLNode* j;
+	DllNode* min;
+	while(i->next !=nullptr)
+	{
+		 min=i;
+		j=i->next;
+
+		while(j!=nullptr)
+		{
+			if(j->info < min->info)
+				min=j;
+			j=j->next;
+		}	
+		
+		if(min!=i)
+		{  
+			DLLNode* prevI = i->prev;
+    			DLLNode* nextI = i->next;
+    			DLLNode* prevM = min->prev;
+    			DLLNode* nextM = min->next;
+			if(i->next==min)
+			{
+				prevI->next=min;
+				min->prev=prevI;
+				min->next=i;
+				i->prev=min;
+				i->next=nextM;	
+				nextM->prev=i;	
+
+			}
+			else
+			{    
+				prevI->next=min;
+				nextI->prev=min;
+				prevM->next=i;
+				nextM->prev=i;
+
+				min->prev=prevI;
+				min->next=nextI;
+				i->prev=prevM;
+				i->next=nextM;
+
+			}	
+
+		}
+		if(i==head)
+			head=min;
+
+		i=min->next;
+	}
+	
+}
+
+DRUGI:(jeca)
+bool insertOrUpdate(char* macAddress,char* IPAddress)
+{
+    unsigned int hash=h(macAddress);
+    int i=1;
+    unsigned int probe=hash;
+    while(i<m && array[probe].status==2 && 
+    array[probe].macAddress!=macAddress)
+    {
+        probe=(hash+c(i))%m;
+        i++;
+    }
+    if(i==m)
+    {
+        cout<<"puna tabela";
+        return false;
+    }
+    if(array[probe].macAddress==macAddress)
+    {
+        array[probe].IPAddress= IPAddress;
+        cout<<"updated!";
+        return true;
+    }
+    array[probe]=Uredjaj(macAddress, IPAddress);
+    array[probe].status=2;
+    count++;
+    return true;
+}
+
+unsigned int c(unsigned int i)
+{
+    return i*i;
+}
+unsigned int h(char* key)
+{
+    return g(f(key));
+}
+unsigned int f(char* key)
+{
+    int i=0;
+    unsigned int h=0;
+    while(i<strlen(key))
+    {
+        if(key[i]!='-')
+        {
+            h=h*101+key[i];
+        }
+        i++;    
+    }
+    return h;
+}
+unsigned int g(unsigned int key)
+{
+    unsigned int a= 2654437269;
+    return(key+a)>>(32-8);
+}
+
+
+TRECI:
+BSTNode* shallowestLeaf(BSTNode* root)
+{
+	if(root==nullptr)
+	{
+		return nullptr;
+	}
+	if(root->left == nullptr && root->right==nullptr)
+        	return root;
+
+	int minDepth = INT_MAX;
+	BSTNode* result = nullptr;
+	findShallowestLeaf(root,0,minDepth,result);
+	return result;
+}
+
+void findShallowestLeaf(BSTNode* node, int depth, int& minDepth, BSTNode*& result)
+{
+	if(node==nullptr) result=nullptr;
+	
+	if(node->left == nullptr && node->right == nullptr)
+	{
+		if(depth<minDepth)
+		{
+			minDepth=depth;
+			result=node;
+		}
+		return node;
+	}
+
+	findShallowestLeaf(node->left, depth+1, minDepth, result);
+	findShallowestLeaf(node->right, depth+1, minDepth, result);
+	return result;
+}
+
+
+4.
+4. nije uradjeno sve i nije sve dobro!
+Graph letovi(brojLetova);
+letovi.bfs(A,B);
+letovi.bfs(A,B,l,l1);
+
+
+bool bfs(LinkedNodeInt* start, LinkedNodeInt* end, LinkedNodeInt* l=nullptr,
+        LinkedNodeInt* l1=nullptr)
+{
+    QueueAsArray q(nodeNum);
+    q.enqueue(start);
+    setAllNodeStatuses(0);
+    start->status=1;
+    start->prev=nullptr;
+    
+    while(!q.isEmpty())
+    {
+        LinkedNodeInt* ptr= q.dequeue();
+        if(ptr->status==1)
+        {
+            LinkedEdgeInt* edg=ptr->adj;
+            while(edg!=nullptr)
+            {
+                if(ptr!=l && edg->dest!=l1) 
+                //if (!(ptr == l && edg->dest == l1)) da bi se preskocila samo konkretna ta grana a ne sve koje vode do l1(CHATGPT)
+                {
+                    if(edg->dest->status==0)
+                    {
+                        edg->dest->prev=ptr;
+                        edg->dest->status=1;
+                        q.enqueue(edg->dest);
+                    }
+                    if(edg->dest==end)
+                        return true;
+                    edg=edg->link;
+                }
+            }
+        ptr->status=2;
+        }
+      
+    }
+      return false;
+}

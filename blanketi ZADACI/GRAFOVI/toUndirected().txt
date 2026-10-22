@@ -1,0 +1,25 @@
+void toUndirected()
+{
+    LinkedNodeInt* ptr = start;
+    
+    while(ptr!=nullptr)
+    {
+        
+        LinkedEdgeInt* edge= ptr->adj;
+        
+        while(edge!=nullptr)
+        {
+            LinkedEdgeInt* check = edge->dest->adj;
+            while(check!=nullptr && check->dest!=ptr)
+            {
+                check=check->link;
+            }
+            if(check==nullptr)
+            {
+                edge->dest->adj = new LinkedEdgeInt(ptr,edge->dest->adj);
+            }
+            edge=edge->link;
+        }
+        ptr=ptr->next;
+    }
+}

@@ -1,0 +1,14 @@
+Kada se koristi BFS?
+Kada nam je važna minimalna udaljenost između čvorova.
+Primer: Pronaći najkraći put u neponderisanom grafu.
+Kada želimo da pretražujemo po slojevima ili nivoima.
+Primer: Širina (level-order) obilazak stabla.
+Kada je graf nevelik i širok, jer BFS može brzo eksplodirati memorijski.
+
+Kada se koristi DFS?
+Kada želimo da istražimo svu granu do kraja pre nego što se vratimo.
+Kada treba proveriti postojanje puta ili komponente povezanosti.
+Koristi se u algoritmima koji zahtevaju rekurzivno istraživanje ili backtracking:
+Topološko sortiranje
+Pronalaženje ciklusa
+Rešavanje labirinta ili sudoku

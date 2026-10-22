@@ -1,0 +1,39 @@
+3.
+
+BSTNode* findMaxAverage()
+{
+    if(root==nullptr)
+        return nullptr;
+        
+        double maxAvg = INT_MIN;
+        BSTNode* result = nullptr;
+        int sum=0;
+        int count=0;
+        NodeWithMaxAvg(root,sum,count,maxAvg,result);
+        
+        return result;
+}
+
+void NodeWithMaxAvg(BSTNode* node, int& sum, int& count, double& maxAvg, BSTNode*& result)
+{
+    if(node==nullptr)
+    {
+      sum=0;count=0;
+      return;
+    }
+    int leftSum,rightSum,leftCount,rightCount;
+    leftSum=rightSum=leftCount=rightCount=0;
+    
+    NodeWithMaxAvg(node->left,leftSum,leftCount,maxAvg,result);
+    NodeWithMaxAvg(node->right,rightSum,rightCount,maxAvg,result);
+    count=leftCount+rightCount+1;
+    sum=leftSum+rightSum+node->info;
+    
+    double p = (double)sum/count;
+    if(p>maxAvg)
+    { 
+        maxAvg=p;
+        result=node;
+    }
+        
+}

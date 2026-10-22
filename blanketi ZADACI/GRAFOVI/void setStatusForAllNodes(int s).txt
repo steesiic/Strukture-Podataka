@@ -1,0 +1,10 @@
+void setStatusForAllNodes(int s)
+{
+    LinkedNodeInt* ptr = start;
+    while(ptr!=nullptr)
+    {
+        ptr->status=s;
+        ptr=ptr->next;
+    }
+    return;
+}

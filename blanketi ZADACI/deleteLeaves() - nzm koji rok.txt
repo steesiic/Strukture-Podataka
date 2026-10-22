@@ -1,0 +1,46 @@
+3.
+
+void deleteLeaves()
+{
+    if(root==nullptr)
+        return;
+        Node*ptr, *tmp;
+        if(root->left==nullptr && root->right == nullptr)
+        {
+            tmp=root;
+            root=nullptr;
+            delete tmp;
+            return;
+        }
+        
+        Stack* s = new Stack(numOfEl);
+        s->push(root);
+;
+    while(!s->empty())
+    {
+        ptr=s->pop();
+        if(ptr->left!=nullptr)
+        {
+            if(ptr->left->left==nullptr && ptr->left->right==nullptr)
+            {
+                tmp=ptr->left;
+                ptr->left=nullptr;
+                delete tmp;
+            }
+            else
+                s->push(ptr->left);
+        }
+         if(ptr->right!=nullptr)
+        {
+            if(ptr->right->left==nullptr &&  ptr->right->right==nullptr)
+            {
+                tmp=ptr->right;
+                ptr->right=nullptr;
+                delete tmp;
+            }
+            else
+                s->push(ptr->right);
+        }
+    }
+    delete s;
+}

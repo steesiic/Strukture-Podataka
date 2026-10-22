@@ -1,0 +1,83 @@
+1.
+Brisi(LL,E)
+
+if(start=null)then
+	return
+endif
+
+if(info(start)=E) then
+start<-link(start)
+return
+endif
+
+LOCP<-start
+LOC<-link(start)
+
+while(LOC!= null and info(LOC)!=E)
+	LOCP<-LOC
+	LOC<-link(LOC)
+end while
+
+if(LOC!=null)	
+
+link(LOCP)<-link(LOC)
+link(LOC)<- null
+endif
+
+return
+
+
+
+for i=0,n-1
+	Brisi(LL,A[i])
+endfor
+------------------------------------------------------------------------------
+2. T(k,Name)
+h(k)=k mod N
+
+1: -
+2: -
+3: (81,Miki)
+4: -(29,Misa)
+5: -(42,Masa)
+6: -
+7: -
+8: -
+9: (22,Sasa)
+10: -
+11: -
+12: -
+13: -
+
+
+
+
+
+
+
+------------------------------------------------------------------------------
+3.
+
+Brisi(T,S1,S2,S3)	//S2,S1,S3
+
+i<-INDEX(T,S1)
+
+PS2<- SUBSTRING(T,i-LENGTH(S2), LENGTH(S2))
+PS3<- SUBSTRING(T,i+LENGTH(S1), LENGTH(S3))
+
+
+if(PS2= S2 and PS3=S3) then
+
+pre= SUBSTRING(T,1,i-1)
+posle= SUBSTRING(T,i+LENGTH(S1),LENGTH(T))
+T<-CONCAT(pre,posle)
+end if
+
+return T
+
+
+
+
+
+
+

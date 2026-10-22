@@ -1,0 +1,64 @@
+1.
+
+i<- 0
+
+if(start=null) then
+	novi<- getNode()
+	info(novi)<-A[i]
+	link(novi)<-null
+	start<-novi
+	i<- i+1
+end if
+
+
+while(i<N)
+novi<-getNode()
+info(novi)<-A[i]
+LOC<-start
+LOCP<-null
+	while(LOC!=null and info(LOC)<=A[i])
+		LOCP<-LOC
+		LOC<-link(LOC)
+	end while
+
+if(LOC=start) then
+
+link(novi)<-start
+start<-novi
+
+else if(LOC=null) then
+link(LOCP)<-novi
+link(novi)<-null
+
+
+else
+	link(novi)<-LOC
+	link(LOCP)<-novi
+end if
+
+i<-i+1
+end while	
+
+
+2.
+Umetni(T,S1,S2)
+
+
+i<INDEX(T,S1)
+
+
+while(i>0)
+	L1<-SUBSTRING(T,0,i+LENGTH(S1))
+	L2<-SUBSTRING(T,i+LENGTH(S1),LENGTH(T)-LENGTH(L1))
+	T<-CONCAT(L1,S2)
+	T<-CONCAT(T,L2)
+	i<-INDEX(L2,S1) // da li u ostatku teksta ima jos neke pojave S1
+
+	if(i>0)then
+		i<-LENGTH(L1)+LENGTH(S2)
+
+	else
+		exit
+	end if
+end while
+return T

@@ -1,0 +1,52 @@
+2. //jecino resenje nisam skontao
+unsigned int f(char* key)
+{
+    unsigned int h=0;
+    int i=10;
+    while(key[i]!='\0')
+    {
+        if(key[i]!='-')
+            h=h*101+key[i];
+        i++;
+    }
+    return h;
+}
+
+unsigned int g(unsigned int key)
+{
+ unsigned int a=2654435769;
+ return(a*key)>>(326);
+}
+unsigned int h(char* key)
+{
+    return g(f(key));   
+}
+unsigned int e(unsigned int i){return i*i;}
+
+void insert(ChainedScatterObject obj)
+
+{
+   unsigned int hash=h(obj.getKey());
+   if(array(hash).status==2)//zauzet
+    {
+        unsigned int probe=hash;
+        unsigned int i=1;
+        while(i<m && array[probe].status==2)
+        {
+            probe=(hash+c(i))%m;
+            i++;
+        }
+        if(i==m)
+        {
+            cout<<"tabela je puna";
+            return;
+        }
+    }
+    array[probe]=obj;
+    count++;
+    array[probe].status=2;
+}
+bool swapWithPrevious(char* key)
+{
+    
+}

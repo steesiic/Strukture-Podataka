@@ -1,0 +1,25 @@
+3.
+int countCloseSiblings(BSTNode* root)
+{
+    if(root==nullptr || (root->left==nullptr && root->right==nullptr))
+        return 0;
+        
+    int sumLeft,sumRight,count=0;
+    
+    sumLeft= countCloseSiblings(root->left);
+    sumRight= countCloseSiblings(root->right);
+    
+    if(root->right!=nullptr)
+    {
+        if(abs(root->info-root->right->info)==1)
+            count++;
+    }
+        if(root->left!=nullptr)
+    {
+        if(abs(root->info-root->left->info)==1)
+            count++;
+    }
+    
+    return (count+sumLeft+sumRight);
+    
+}

@@ -1,0 +1,43 @@
+1.
+
+
+Dodaj(LL,E)
+
+novi<-getNode()
+info(novi)<-E
+
+if(start=null) then
+	start<-novi
+	link(novi)<-null
+	return
+end if
+
+LOCP<-nullptr
+LOC<-start
+
+while(LOC!=null and info(LOC)<=E)
+	LOCP<-LOC
+	LOC<-link(LOC)
+end while
+
+if(LOC=start) then
+	link(novi)<-start
+	start<-novi
+end if
+
+link(LOCP)<-novi
+link(novi)<-LOC
+
+return
+
+
+
+for i=0,N-1
+call Dodaj(LL,A[i])
+end for
+
+p<-start
+while(p!=null)
+	print(info(p))
+	p<-link(p)
+end while	

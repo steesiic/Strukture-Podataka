@@ -1,0 +1,117 @@
+1.
+
+BrisiMaxEL(LL,Max)
+
+
+if(start = NULL) then
+	exit
+LOCP<- start
+if(link(LOCP)=null) then
+	LOCM<-LOCP
+else
+	LOCM<-start
+	LOCMP<- NULL
+	LOC<-link(start)
+	while(LOC!= NULL) 
+	
+		if(info(LOCM)<info(LOC)) then
+		LOCM<-LOC
+		LOCMP<-LOCP
+	
+		LOCP<-LOC
+		LOC<-link(LOC)
+	end while
+Max <- info(LOCM)
+
+if(LOCM=start) then
+start<-link(start)
+
+else
+link(LOCMP) <- link(LOCM)
+
+end if
+
+return Max
+
+TraziEL(A,LL)
+
+while(start!=NULL)
+	s<-BrisiMaxEl(LL,Max)
+
+	LOC<- NULL
+	for i=1,N
+		if(A[i]=s) 
+			then LOC<-i
+			print(LOC)
+		end if
+	end for
+end while
+
+---------------------------------------------
+2.
+T(k,Name)
+h(k)=k mod N
+
+odnos broja podataka i velicine tablici bi idealno trebalo biti oko 0.8, i dobro je da velicina tablice bude prost broj. zato u ovom slucaju treba izabrati broj 13 kao velicinu tablice
+N=13
+
+TABLICA:
+
+ 0 : —
+ 1 : —
+ 2 : —
+ 3 : 	(81,Micko)
+ 4 : 					(69,Ena)
+ 5 : —
+ 6 : 						(32,Una)
+ 7 : (18, Miki)
+ 8 : (41, Macko)
+ 9 : (22, Susko)
+10 : 				(48,Laki)
+11 : 		(63,Macko)
+12 : 			(38,Bucko)
+
+
+h(k) = k mod 13
+
+(h(k)+i^2)
+
+1) (81,Micko)
+h(81) = 81 mod 13 = 3
+i=0, pozicija 3 je slobodna
+
+2) (63,Macko)
+
+h(63)= 63 mod 13 = 11
+i=0, pozicija 11 je slobodna
+
+3) (38,Bucko)
+h(38)= 38 mod 13 = 12
+i=0,pozicija 12 je slobodna
+
+4) (48,Laki)
+h(48) = 48 mod 13 = 9
+i=0, pozicija 9 je zauzeta
+i=1, 9+1^2 = 10, pozicija 10 je slobodna
+
+5) (69,Ena)
+h(69) = 69 mod 13 = 4
+i=0, pozicija 4 je slobodna
+
+6) (32,Una)
+h(32) = 32 mod 13 = 6
+i=0, pozicija 6 je slobodna
+
+---------------------------------------------
+3.
+Umetni(T,S1,S2,S3)
+
+i <- INDEX(T,S1)
+PS <- SUBSTRING(T,i+LENGTH(S1)+1,LENGTH(S3))
+if(PS= S3) then
+pre<- SUBSTRING(T,1,i+LENGTH(S1))
+posle<-SUBSTRING(T,i+LENGTH(S1)+1, LENGTH(T))
+T<- CONCAT(pre,S2)
+T<-CONCAT(T,posle)
+endif
+return T
